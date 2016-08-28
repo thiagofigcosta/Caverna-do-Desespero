@@ -1,0 +1,333 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1046{\fonttbl{\f0\fnil MS Sans Serif;}{\f1\fnil\fcharset0 MS Sans Serif;}}
+\viewkind4\uc1\pard\b\f0\fs24 Information about object: obj_player
+\par \b0\fs16 
+\par Sprite: spr_Player1
+\par Solid: false
+\par Visible: true
+\par Depth: 0
+\par Persistent: false
+\par Parent: obj_parenteNsolido
+\par Mask: <same as sprite>
+\par 
+\par \b Create Event:
+\par \b0 execute code:
+\par  
+\par facar = 0;
+\par correrd = 0;
+\par correre = 0;
+\par correndod = 0;
+\par correndoe = 0;
+\par pular = 0;
+\par pulando = 0;
+\par pulei = 0;
+\par tirolimit = 1; //limita riros da pistola 1 pode desparar 0 n\f1\'e3o
+\par reloada = 0; // se 0 pode atirar, se 1 esta carregando!
+\par reloadr = 0; // se 0 pode atirar, se 1 esta carregando!
+\par tirosdadosr = 0;
+\par tirosdadosa = 0;
+\par 
+\par 
+\par 
+\par 
+\par \f0 
+\par \b Alarm Event for alarm 0:
+\par \b0 execute code:
+\par 
+\par tirolimit = 1;
+\par 
+\par 
+\par \b Alarm Event for alarm 1:
+\par \b0 execute code:
+\par 
+\par correrd = 0;
+\par correre = 0;
+\par 
+\par if keyboard_check_released (vk_right)\{
+\par     alarm[1] = 4;
+\par \} 
+\par 
+\par if keyboard_check_released (vk_left)\{
+\par     alarm[1] = 4;
+\par \} 
+\par 
+\par 
+\par \b Alarm Event for alarm 2:
+\par \b0 execute code:
+\par 
+\par pular = 0;
+\par 
+\par if keyboard_check_released(vk_up)\{
+\par     alarm[2] = 8;
+\par \} 
+\par 
+\par 
+\par \b Alarm Event for alarm 3:
+\par \b0 execute code:
+\par 
+\par reloadr = 0;
+\par tirosdadosr = 0;
+\par tirolimit = 1;
+\par instance_destroy()
+\par 
+\par 
+\par \b Alarm Event for alarm 4:
+\par \b0 execute code:
+\par 
+\par reloada = 0;
+\par tirosdadosa = 0;
+\par tirolimit = 1;
+\par 
+\par 
+\par \b  Step Event:
+\par \b0 execute code:
+\par 
+\par if (global.vivo=0) \{exit;\} //se esta morto nao executar esse comando
+\par 
+\par if (keyboard_check(vk_right) )\{ //se precionar a seta direita executar o script movimento (direta)
+\par     scr_movimento(1)
+\par \}
+\par 
+\par if keyboard_check_released(vk_right)\{
+\par     correndod = 0;
+\par     correrd = 1;
+\par     alarm[1] = 4;   
+\par \}
+\par     
+\par if correrd == 1 and keyboard_check(vk_right) \{correndod = 1\}
+\par if correre == 1 and keyboard_check(vk_left) \{correndoe = 1\}
+\par 
+\par if correndod ==1 and keyboard_check(vk_right) and pulando == 0 \{ // se aperta soma 1
+\par     scr_movimento_run(1);
+\par \}
+\par 
+\par 
+\par if (keyboard_check(vk_left) )\{ 
+\par     scr_movimento(-1)
+\par \}
+\par 
+\par if keyboard_check_released(vk_left)\{
+\par     correndoe = 0;
+\par     correre = 1;
+\par     alarm[1] = 4;
+\par     \}
+\par 
+\par if correndoe == 1 and keyboard_check(vk_left) and pulando == 0 \{ // se aperta soma 1
+\par     scr_movimento_run(-1);
+\par \}
+\par 
+\par 
+\par 
+\par execute code:
+\par 
+\par if (global.vivo=0) \{exit;\}
+\par if (keyboard_check_pressed(vk_up))\{
+\par     if (collision_rectangle(x-14,y,x+14,y+1,obj_parentesolido,0,0))\{
+\par     pulei = 1;
+\par     vspeed = -10;\}
+\par \}
+\par if (keyboard_check_released(vk_up))\{pular = 1; alarm[2]=8; pulando = 0;\}
+\par if pular == 1 and keyboard_check_pressed(vk_up) and pulando == 0 and pulei == 1 \{
+\par     pulei = 2;
+\par     pulando = 1;
+\par     vspeed = -10;
+\par \}
+\par 
+\par if (collision_rectangle(x-14,y,x+14,y+1,obj_parentesolido,0,0)) and pulei = 2 \{pulei = 0\}
+\par 
+\par 
+\par execute code:
+\par 
+\par if (keyboard_check_pressed(ord('A')))\{   // key oressed porque n\f1\'e3o queremos segurar a tecla
+\par     if (global.sele == 1) \{global.sele = 2; exit;\}
+\par     if (global.sele == 2) \{global.sele = 3; exit;\}
+\par     if (global.sele == 3) \{global.sele = 1; exit;\}
+\par \}
+\par 
+\par \f0 execute code:
+\par 
+\par if (keyboard_check_pressed(ord('S')) and (global.arma[global.sele,1]=="faca"))\{
+\par     sprite_index=spr_Player1;
+\par     facar = 1;
+\par     if image_xscale == 1 \{
+\par     instance_create(x+14,y-16,obj_faca);
+\par     \}
+\par     if image_xscale == -1 \{
+\par     instance_create(x-14,y-16,obj_faca);
+\par     \}
+\par     obj_faca.alarm[0] = 5;
+\par \}
+\par 
+\par if keyboard_check_released(ord('S')) and facar == 1 \{
+\par     sprite_index=spr_playerfaca;
+\par     facar = 0;
+\par     obj_faca.alarm[0]=1
+\par \}
+\par 
+\par     if (keyboard_check_pressed(ord('S')) and tirolimit == 1 and reloadr == 0 )\{
+\par         if (global.arma[global.sele,1]=="revolver")\{
+\par             if (global.arma[global.sele,2]>0) \{
+\par                 var var_009;
+\par                 var_009 = instance_create(x,y-16,obj_bala);
+\par                   var_009.hspeed = 11*(image_xscale);
+\par                   global.arma[global.sele,2] -=1;
+\par                   tirolimit = 0;
+\par                   tirosdadosr +=1;
+\par                   alarm[0]=12;
+\par             \}
+\par         \}
+\par     \}
+\par 
+\par     if (keyboard_check(ord('S')) and tirolimit == 1 and reloada ==0)\{
+\par         if (global.arma[global.sele,1]=="ak47")\{
+\par             if (global.arma[global.sele,2]>0) \{
+\par                 var var_009;
+\par                 var_009 = instance_create(x,y-16,obj_bala);
+\par                   var_009.hspeed = 15*(image_xscale);
+\par                   global.arma[global.sele,2] -=1;
+\par                   tirolimit = 0;
+\par                   tirosdadosa +=1;
+\par                   alarm[0]=5;
+\par             \}
+\par         \}
+\par     \}
+\par 
+\par 
+\par /*if tirosdadosr==6\{
+\par     tirolimit=1; 
+\par     reloadr=1;
+\par     alarm[3]=15;
+\par \}
+\par 
+\par if tirosdadosa==15\{ 
+\par     tirolimit=1;
+\par     reloada=1;
+\par     alarm[4]=15;
+\par \}
+\par */
+\par 
+\par execute code:
+\par 
+\par if (global.vivo==0)\{
+\par         if (keyboard_check_pressed (ord('R')))\{room_restart(); global.vivo=1\}        
+\par \}
+\par 
+\par execute code:
+\par 
+\par var var_013;
+\par var_013 = collision_rectangle(x-14,y,x+14,y-48,obj_blocoporta,0,0);
+\par 
+\par if var_013 && obj_blocoporta.fechand == true\{
+\par     vivo = 0;
+\par \}
+\par 
+\par 
+\par 
+\par \b Begin Step Event:
+\par \b0 execute code:
+\par 
+\par if (collision_rectangle(x-16,y,x+16,y+vspeed-32,obj_parentesolido ,0,0)&& vspeed < 0)\{
+\par     var var_005;
+\par     var_005 = (collision_rectangle(x-16,y,x+16,y+vspeed-32,obj_parentesolido,0,0));
+\par     
+\par     if (y<var_005.y+16) \{exit;\}
+\par     y = var_005.y+49;
+\par     vspeed = 0;
+\par \}
+\par 
+\par 
+\par if (collision_rectangle(x-16,y,x+16,y+vspeed,obj_parentesolido,0,0)&& vspeed > 0)\{
+\par     var var_005, rampa9;
+\par     var_005 = collision_rectangle(x-16,y,x+16,y+vspeed,obj_parentesolido,0,0);
+\par 
+\par     for (rampa9=0;rampa9<=33;rampa9+=1;)\{ //para subir a rampa
+\par         if (place_free(x,var_005.y+16-rampa9))\{
+\par             y = var_005.y+16-rampa9;
+\par             break;
+\par           
+\par         \}
+\par     \}
+\par     
+\par     vspeed = 0;
+\par     gravity = 0; // gravidade 0 quando esta encostado no bloco
+\par     
+\par     move_contact_solid(270,12);
+\par \}
+\par if (collision_rectangle(x-16,y,x+16,y+vspeed-32,obj_bloconsolido ,0,0)&& vspeed < 0)\{
+\par     var var_005;
+\par     var_005 = (collision_rectangle(x-16,y,x+16,y+vspeed-32,obj_bloconsolido,0,0));
+\par     
+\par     if (y<var_005.y+16) \{exit;\}
+\par     y = var_005.y+49;
+\par     vspeed = 0;
+\par \}
+\par 
+\par 
+\par if (collision_rectangle(x-16,y,x+16,y+vspeed,obj_bloconsolido,0,0)&& vspeed > 0)\{
+\par     var var_005, rampa9;
+\par     var_005 = collision_rectangle(x-16,y,x+16,y+vspeed,obj_bloconsolido,0,0);
+\par 
+\par     for (rampa9=0;rampa9<=33;rampa9+=1;)\{ //para subir a rampa
+\par         if (place_free(x,var_005.y+16-rampa9))\{
+\par             y = var_005.y+16-rampa9;
+\par             break;
+\par           
+\par         \}
+\par     \}
+\par     
+\par     vspeed = 0;
+\par     gravity = 0; // gravidade 0 quando esta encostado no bloco
+\par     
+\par     move_contact_solid(270,12);
+\par \}
+\par 
+\par 
+\par \b End Step Event:
+\par \b0 execute code:
+\par 
+\par if (global.vivo=0) \{exit;\}
+\par if (place_free(x,y+1))\{ 
+\par     gravity = 0.5;          //intencidade da gravitade
+\par     gravity_direction = 270; // gravidade para baixo
+\par \}
+\par 
+\par execute code:
+\par 
+\par if (global.vivo=0)\{
+\par     sprite_index = spr_player1_death
+\par \}
+\par 
+\par execute code:
+\par 
+\par var var_006;
+\par var_006 = collision_rectangle(x-16,y,x+16,y+vspeed,obj_espeto,0,0);
+\par 
+\par if (var_006 && vspeed>0)\{
+\par     if (var_006.image_angle == 270)\{exit;\}
+\par     if (var_006.image_angle == 0)\{exit;\}
+\par     gravity=0;
+\par     vspeed=0;
+\par     y = var_006.y-16;
+\par     global.vivo = 0;
+\par \}
+\par 
+\par execute code:
+\par 
+\par if (global.vivo=0)\{exit;\}
+\par 
+\par if (global.arma[global.sele,1]="")\{ sprite_index=spr_Player1; exit;\}
+\par if (global.arma[global.sele,1]="revolver")\{ sprite_index=spr_playerpistola; exit; \}
+\par if (global.arma[global.sele,1]="ak47")\{ sprite_index=spr_playerak; exit; \}
+\par if (global.arma[global.sele,1]="faca" and facar == 0)\{ sprite_index=spr_playerfaca; exit; \}
+\par 
+\par execute code:
+\par 
+\par if (global.arma[1,2] > global.arma[1,3])\{
+\par         global.arma[1,2] = global.arma[1,3];
+\par     \}
+\par if (global.arma[2,2] > global.arma[2,3])\{
+\par         global.arma[2,2] = global.arma[2,3];
+\par     \}
+\par 
+\par 
+\par }
+ 
