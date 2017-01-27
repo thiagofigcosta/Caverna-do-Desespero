@@ -17,6 +17,7 @@ ENUS
 ABOUT
 -------------------------------------------------------
 Simple platform game, with some mechanics and cheats implemented but missing phases.
+See: https://github.com/thiagofigcosta/WhiteHat
 The MIT License (MIT) read LICENSE.txt;	
 
 
@@ -38,6 +39,7 @@ PTBR
 SOBRE
 -------------------------------------------------------
 Jogo simples de plataforma, com algumas mecanicas e cheats implementados mas faltando fases.
+Veja: https://github.com/thiagofigcosta/WhiteHat
 The MIT License (MIT) read LICENSE.txt;	
 
 
